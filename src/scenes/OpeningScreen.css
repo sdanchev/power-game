@@ -1,0 +1,187 @@
+/* OpeningScreen.css — polished, responsive, and robust */
+
+/* Ensure predictable box-sizing and base resets (safe to include) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Top-level container */
+.opening-screen {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  font-family: "Helvetica Neue", Helvetica, Arial, serif;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* If you left .container in the markup, support it */
+.opening-screen.container {
+  padding: 28px;
+}
+
+/* Text blocks */
+.opening-screen .opening-text,
+.opening-screen p {
+  font-size: 1.03rem;
+  margin-bottom: 1rem;
+  text-align: justify;
+  white-space: normal;           /* allow wrapping */
+  overflow-wrap: break-word;     /* break long words/URLs */
+  word-break: break-word;
+  color: #333;
+}
+
+/* Highlight span */
+.opening-screen .highlight {
+  font-style: italic;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+/* Call to action box */
+.opening-screen .call-to-action {
+  background: #f1f5f9;
+  padding: 18px;
+  border-radius: 8px;
+  margin-top: 24px;
+  border-left: 4px solid #2563eb;
+}
+
+/* Buttons */
+.opening-screen .survey-button,
+.opening-screen button {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 12px;
+}
+.opening-screen .survey-button:hover,
+.opening-screen button:hover {
+  background: #1e40af;
+}
+
+/* Privacy note */
+.opening-screen .privacy-note {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* --- Carousel styles --- */
+/* container must have an explicit height for background-image slides */
+.opening-screen .carousel-container {
+  margin: 20px 0;
+  position: relative;
+  height: 320px;           /* ensures slides have visible height */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+  background: #111;        /* fallback if images missing */
+}
+
+/* slides sit on top of each other */
+.opening-screen .carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  background-size: contain; /* Fit entire image inside container */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  height: 320px; /* Or whatever you want */
+}
+
+/* active slide visible */
+.opening-screen .carousel-slide.active {
+  opacity: 1;
+}
+
+/* caption area */
+.opening-screen .carousel-caption {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  color: #fff;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+/* indicators */
+.opening-screen .carousel-indicators {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+.opening-screen .indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: transform .12s ease;
+}
+.opening-screen .indicator.active {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+/* Ensure regular <img> fallback is responsive */
+.opening-screen img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Footnotes/notes */
+.opening-screen .footnote {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-left: 6px;
+}
+
+.opening-screen-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  min-height: 100vh;       /* full screen height */
+  width: 100%;
+  background-color: #f8fafc; /* optional light backdrop */
+}
+
+.opening-screen {
+  max-width: 900px;
+  width: auto;
+  margin: 0 auto;
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  .opening-screen {
+    margin: 16px;
+    padding: 18px;
+  }
+  .opening-screen .carousel-container {
+    height: 220px;
+  }
+  .opening-screen h1 { font-size: 1.8rem; }
+  .opening-screen .opening-text { font-size: 1rem; }
+}
