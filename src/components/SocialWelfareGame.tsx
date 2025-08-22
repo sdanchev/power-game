@@ -167,18 +167,76 @@ const backgroundStyle = getBackgroundStyle();
     setDraggedCoin(null);
   };
 
+  const handleTouchStart = (e, coin) => {
+    const touch = e.touches[0];
+    const rect = gameRef.current.getBoundingClientRect();
+    const coinElement = e.target.closest('.coin');
+    const coinRect = coinElement.getBoundingClientRect();
+
+    setDraggedCoin(coin.id);
+    setDragOffset({
+      x: touch.clientX - coinRect.left - coinRect.width / 2,
+      y: touch.clientY - coinRect.top - coinRect.height / 2
+    });
+  };
+
+  const handleTouchMove = (e) => {
+    if (draggedCoin === null) return;
+    const touch = e.touches[0];
+    const rect = gameRef.current.getBoundingClientRect();
+    const newX = touch.clientX - rect.left - dragOffset.x;
+    const newY = touch.clientY - rect.top - dragOffset.y;
+
+    setCoins(prev => prev.map(coin =>
+      coin.id === draggedCoin
+        ? { ...coin, position: { x: newX, y: newY } }
+        : coin
+    ));
+  };
+
+  const handleTouchEnd = (e) => {
+    if (draggedCoin === null) return;
+    const touch = e.changedTouches[0];
+    const rect = gameRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    // Check drop zones
+    let newOwner = 'pile';
+    if (x > 60 && x < 240 && y > 250 && y < 430) newOwner = 'person1';
+    else if (x > 310 && x < 490 && y > 250 && y < 430) newOwner = 'person2';
+    else if (x > 560 && x < 740 && y > 250 && y < 430) newOwner = 'person3';
+
+    setCoins(prev => prev.map(coin =>
+      coin.id === draggedCoin
+        ? { ...coin, owner: newOwner, position: { x: 0, y: 0 } }
+        : coin
+    ));
+
+    setDraggedCoin(null);
+  };
+
   useEffect(() => {
     const handleGlobalMouseMove = (e) => handleMouseMove(e);
     const handleGlobalMouseUp = (e) => handleMouseUp(e);
-    
+
+    const handleGlobalTouchMove = (e) => handleTouchMove(e);
+    const handleGlobalTouchEnd = (e) => handleTouchEnd(e);
+
     if (draggedCoin !== null) {
       document.addEventListener('mousemove', handleGlobalMouseMove);
       document.addEventListener('mouseup', handleGlobalMouseUp);
+
+      document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
+      document.addEventListener('touchend', handleGlobalTouchEnd);
     }
-    
+
     return () => {
       document.removeEventListener('mousemove', handleGlobalMouseMove);
       document.removeEventListener('mouseup', handleGlobalMouseUp);
+
+      document.removeEventListener('touchmove', handleGlobalTouchMove);
+      document.removeEventListener('touchend', handleGlobalTouchEnd);
     };
   }, [draggedCoin, dragOffset]);
 
@@ -206,6 +264,7 @@ const backgroundStyle = getBackgroundStyle();
           marginRight: index < ownerCoins.length - 1 ? '-8px' : '0'
         }}
         onMouseDown={(e) => handleMouseDown(e, coin)}
+        onTouchStart={(e) => handleTouchStart(e, coin)}
       >
         🪙
       </div>
